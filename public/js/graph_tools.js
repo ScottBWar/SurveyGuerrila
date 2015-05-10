@@ -1,47 +1,4 @@
 
-<style>
-.tip {
-  font-size: 8px;
-
-}
-
-</style>
-
-<div class='container'>
-  <% survey.questions.each_with_index do |question, index| %>
-    <p><%=index + 1 %>. <%= question.question_text %></p>
-    <% question.choices.each do |choice| %>
-      <p><%= choice.choice_text %>---<%= response_percentage(choice, survey) %></p>
-    <% end %>
-  <% end %>
-  <h3> Here's what folks had to say : </h3>
-  <% survey.surveys_users.each do |survey_response| %>
-    <p><%= survey_response.comment %></p>
-  <% end %>
-</div>
-
-
-
-<div class="experiment_container">
-  <h2>D3 Graphic</h2>
-  <div id="chart"></div>
-
-
-
-
-</div>
-
-<h4>AND OTHER STUFF</h4>
-<div id='piechart'></div>
-
-
-
-
-
-
-
-<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script>
  var bardata = [25, 50, 75, 100, 20];
  var categories = ["chocolate", "vanilla", "strawberry", "sometimes", "mendel"]
 
@@ -51,10 +8,10 @@ bardata.sort(function compareNumbers(a,b){
   return a-b;
 });
 
- var height = 200,
- width = 500,
- barWidth = 200,
- barOffset = 100;
+ var height = 300,
+ width = 400,
+ barWidth = 50,
+ barOffset = 5;
 
  var colors = d3.scale.linear()
     .domain([0, bardata.length-10, d3.max(bardata)])
@@ -78,7 +35,8 @@ bardata.sort(function compareNumbers(a,b){
  .style('background', 'white')
  .style('opacity', 0)
 
-var myChart = d3.select('#chart').append('svg')
+var myChart = d3.select('body').append('svg')
+   .append('svg')
   .attr('width', width)
   .attr('height', height)
   .append('g')
@@ -99,7 +57,7 @@ var myChart = d3.select('#chart').append('svg')
     tooltip.transition()
     .style('opacity', .9)
 
-    tooltip.html(categories[i] + " " + "       ||" + "  " + d)
+    tooltip.html(categories[i] + " " + d +'%')
     .style('left', (d3.event.pageX) + 'px')
     .style('top', (d3.event.pageY) + 'px')
 
@@ -139,6 +97,7 @@ var myChart = d3.select('#chart').append('svg')
 console.log('made a graph')
 }
 
+makeTheGraph(bardata, categories)
 
 
 
@@ -223,39 +182,5 @@ var piedata = [
       })
 console.log('made a pie')
 }
-</script>
 
-
-
-
-
-<script>
- $(document).ready(function(){
- <% survey.questions.each_with_index do |question, index| %>
-
- var text_array = []
- var p_array = []
- <% question.choices.each do |choice| %>
-
-       p_array.push('<%= choice.responses.count %>')
-       text_array.push('<%= choice.choice_text %>')
-    <% end %>
- console.log(p_array)
- console.log(text_array)
-
-var txt = document.createTextNode("<%= question.question_text %>")
-
- document.getElementById('#chart')
-
-
-
-  makeTheGraph(p_array, text_array)
-
-
-  <% end %>
-})
-</script>
-
-
-
-
+makeThePie(piedata)
